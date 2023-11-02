@@ -1,70 +1,73 @@
 <template>
-  <section class="app">
-    <div class="center-app col">
-      <div class="profile-page profile-page-${user.getRole()}">
+  <section
+    class="profile-page"
+    :class="`profile-page-${getRoleText}`"
+  >
+    <div class="row">
+      <img
+        class="profile-icon"
+        src="../../../../public/icons/profile-circle-svgrepo-com.svg"
+      >
+      <div class="ml-5">
         <div class="row">
-          <div>
-            <img
-              class="profile-icon"
-              src="../../../../public/icons/profile-circle-svgrepo-com.svg"
-            >
-          </div>
-          <div class="ml-5">
-            <div class="row">
-              <p>Логин: </p>
-              <p class="ml-2">
-                {{ user }}
-              </p>
-            </div>
-            <div class="row">
-              <p>Email: </p>
-              <p class="ml-2">
-                some email
-              </p>
-            </div>
-            <div class="row">
-              <p>Роль: </p>
-              <p class="ml-2">
-                {{ getRoleText }}
-              </p>
-            </div>
-          </div>
+          <p class="mb-4 mt-4">
+            Логин:
+          </p>
+          <p class="mb-4 ml-2 mt-4">
+            {{ user }}
+          </p>
         </div>
-        <div v-if="userIsAdmin">
-          <div class="col profile-edit-block">
-            <div class="profile-form-edit row">
-              <div>
-                Создайте новую позицию:
-              </div>
-              <button
-                class="profile-create-btn"
-                @click="$router.push({ name: 'CreatePage' })"
-              >
-                Создать
-              </button>
-            </div>
-            <div>
-              Введите id товара для редактирования:
-            </div>
-            <div class="profile-form-edit row">
-              <input
-                placeholder="Enter id"
-                required
-                class="profile-text-field"
-                type="number"
-                @input="SET_DATA({ field: 'productIdToEdit', value: $event.target.value })"
-              >
-              <button
-                class="profile-edit-btn"
-                @click="openEditPage"
-              >
-                Редактировать
-              </button>
-            </div>
-          </div>
+        <div class="row">
+          <p class="mb-4 mt-4">
+            Email:
+          </p>
+          <p class="mb-4 ml-2 mt-4">
+            some email
+          </p>
+        </div>
+        <div class="row">
+          <p class="mb-4 mt-4">
+            Роль:
+          </p>
+          <p class="mb-4 ml-2 mt-4">
+            {{ getRoleText }}
+          </p>
         </div>
       </div>
     </div>
+    <template v-if="userIsAdmin">
+      <div class="col profile-edit-block">
+        <div class="profile-form-edit row">
+          <div>
+            Создайте новую позицию:
+          </div>
+          <button
+            class="profile-create-btn"
+            @click="$router.push({ name: 'CreatePage' })"
+          >
+            Создать
+          </button>
+        </div>
+        <div>
+          Введите id товара для редактирования:
+        </div>
+        <div class="profile-form-edit row">
+          <input
+            placeholder="Enter id"
+            required
+            class="profile-text-field"
+            type="number"
+            @input="SET_DATA({ field: 'productIdToEdit', value: $event.target.value })"
+          >
+          <button
+            class="profile-edit-btn"
+            @click="openEditPage"
+          >
+            Редактировать
+          </button>
+        </div>
+      </div>
+    </template>
   </section>
 </template>
 <script>
@@ -91,8 +94,8 @@ export default {
     },
     getRoleText() {
       const text = {
-        ROLE_USER: 'Пользователь',
-        ROLE_ADMIN: 'Админ',
+        ROLE_USER: 'user',
+        ROLE_ADMIN: 'admin',
       };
       const [role] = this.getUserRoles;
 

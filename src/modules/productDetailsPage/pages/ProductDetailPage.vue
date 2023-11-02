@@ -1,65 +1,63 @@
 <template>
-  <section class="app">
-    <div class="product-detail-page">
-      <div class="product-detail-page__content">
-        <div class="col">
-          <h3
-            class="mb-0 mt-2"
-            style="margin-bottom: 5px;"
+  <section class="product-detail-page">
+    <div class="product-detail-page__content">
+      <div class="col">
+        <h3
+          class="mb-0 mt-2"
+          style="margin-bottom: 5px;"
+        >
+          {{ product.name }}
+        </h3>
+        <div class="img-box">
+          <img
+            class="image-wrapper img-box"
+            :src="product.imagePath"
           >
-            {{ product.name }}
-          </h3>
-          <div class="img-box">
-            <img
-              class="image-wrapper img-box"
-              :src="product.imagePath"
+        </div>
+        <div
+          class="col product-detail-page__footer"
+          style="align-items: center;"
+        >
+          <div class="row">
+            <button
+              class="btn btn-green"
+              :class="getBtnClass"
             >
-          </div>
-          <div
-            class="col product-detail-page__footer"
-            style="align-items: center;"
-          >
-            <div class="row">
-              <button
-                class="btn btn-green"
-                :class="getBtnClass"
-              >
-                @click="addToCart"
-                Добавить в корзину
-              </button>
-            </div>
+              @click="addToCart"
+              Добавить в корзину
+            </button>
           </div>
         </div>
-        <div class="col product-detail-page__info">
-          <div class="product-detail-page__title">
-            <h3 class="ml-8 mt-2">
-              Описание
+      </div>
+      <div class="col product-detail-page__info">
+        <div class="product-detail-page__title">
+          <h3 class="ml-8 mt-2">
+            Описание
+          </h3>
+          <button
+            class="btn-return"
+            @click="$router.push({ name: 'Store' })"
+          >
+            return
+          </button>
+          <!--            <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
+          <!--              <jsp:param-->
+          <!--                name="action"-->
+          <!--                value="products"-->
+          <!--              />-->
+          <!--            </jsp:include>-->
+        </div>
+        <p class="ml-8 mr-5 mt-0 product-detail-page__description">
+          {{ product.description }}
+        </p>
+        <div class="col ml-8 product-detail-page__footer">
+          <div class="row">
+            <h3 class="reset">
+              Стоимость:
             </h3>
-            <button
-              class="btn-return"
-              @click="$router.push({ name: 'Store' })"
-            >
-              return
-            </button>
-            <!--            <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
-            <!--              <jsp:param-->
-            <!--                name="action"-->
-            <!--                value="products"-->
-            <!--              />-->
-            <!--            </jsp:include>-->
-          </div>
-          <p class="ml-8 mr-5 mt-0 product-detail-page__description">
-            {{ product.description }}
-          </p>
-          <div class="col ml-8 product-detail-page__footer">
-            <div class="row">
-              <h3 class="reset">
-                Стоимость:
-              </h3>
-              <h2 class="ml-2 product-detail-page__price reset">
-                {{ product.price }}
-              </h2>
-            </div>
+            <h2 class="ml-2 product-detail-page__price reset">
+              {{ product.price }}
+            </h2>
           </div>
         </div>
       </div>

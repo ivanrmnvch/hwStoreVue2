@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="center-app col">
     <MainHeader />
     <router-view />
     <MainLoginForm />
