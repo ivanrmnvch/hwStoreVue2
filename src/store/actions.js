@@ -5,7 +5,7 @@ import {
   getSessionData,
   getSessionToken,
   removeSessionToken,
-} from './modules/auth/utils';
+} from '@/utils/common';
 
 export default {
   async authorization({ state, commit }) {

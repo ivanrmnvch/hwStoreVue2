@@ -5,7 +5,7 @@ import {
   removeSessionToken,
   getTokenData,
   setSessionToken,
-} from './utils';
+} from '@/utils/common';
 
 let timeout = null;
 

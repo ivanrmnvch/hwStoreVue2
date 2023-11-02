@@ -1,10 +1,170 @@
 <template>
-  <section>
-    Profile
+  <section class="app">
+    <div class="center-app col">
+      <div class="profile-page profile-page-${user.getRole()}">
+        <div class="row">
+          <div>
+            <img
+              class="profile-icon"
+              src="../../../../public/icons/profile-circle-svgrepo-com.svg"
+            >
+          </div>
+          <div class="ml-5">
+            <div class="row">
+              <p>Логин: </p>
+              <p class="ml-2">
+                {{ user }}
+              </p>
+            </div>
+            <div class="row">
+              <p>Email: </p>
+              <p class="ml-2">
+                some email
+              </p>
+            </div>
+            <div class="row">
+              <p>Роль: </p>
+              <p class="ml-2">
+                {{ getRoleText }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div v-if="userIsAdmin">
+          <div class="col profile-edit-block">
+            <div class="profile-form-edit row">
+              <div>
+                Создайте новую позицию:
+              </div>
+              <button
+                class="profile-create-btn"
+                @click="$router.push({ name: 'CreatePage' })"
+              >
+                Создать
+              </button>
+            </div>
+            <div>
+              Введите id товара для редактирования:
+            </div>
+            <div class="profile-form-edit row">
+              <input
+                placeholder="Enter id"
+                required
+                class="profile-text-field"
+                type="number"
+                @input="SET_DATA({ field: 'productIdToEdit', value: $event.target.value })"
+              >
+              <button
+                class="profile-edit-btn"
+                @click="openEditPage"
+              >
+                Редактировать
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex';
+
+import { getTokenData } from '@/utils/common';
+
 export default {
   name: 'ProfilePage',
+  computed: {
+    ...mapState(['productIdToEdit']),
+    ...mapState('auth', [
+      'user',
+      'token',
+    ]),
+    getUserRoles() {
+      try {
+        const data = getTokenData(this.token);
+        const { roles } = data;
+        return roles;
+      } catch {
+        return [];
+      }
+    },
+    getRoleText() {
+      const text = {
+        ROLE_USER: 'Пользователь',
+        ROLE_ADMIN: 'Админ',
+      };
+      const [role] = this.getUserRoles;
+
+      return text[role];
+    },
+    userIsAdmin() {
+      const roles = this.getUserRoles;
+      return roles.includes('ROLE_ADMIN');
+    },
+  },
+  methods: {
+    ...mapMutations(['SET_DATA']),
+    openEditPage() {
+      const id = this.productIdToEdit;
+      if (id && id > 0) {
+        this.$router.push({
+          name: 'EditPage',
+          params: { id },
+        });
+      }
+    },
+  },
 };
 </script>
+<style lang="sass" scoped>
+.profile-page
+  background-color: white
+  border-radius: 8px
+  width: 330px
+  height: 300px
+  box-shadow: 2px 2px 5px -1px gray
+  padding: 10px
+.profile-page-user
+  height: 150px
+.profile-icon
+  object-fit: contain
+  width: 50px
+  height: 50px
+.profile-create-btn
+  border: none
+  border-radius: 3px
+  cursor: pointer
+  color: white
+  font-size: 16px
+  background-color: #4c9a50
+  padding: 5px 20px
+.profile-create-btn:hover
+  background-color: #45a049
+.profile-create-btn:active
+  background-color: #51be56
+.profile-edit-btn
+  border: none
+  border-radius: 3px
+  cursor: pointer
+  color: white
+  font-size: 16px
+  background-color: #ce35c8
+  padding: 5px 20px
+.profile-edit-btn:hover
+  background-color: #bf44ba
+.profile-edit-btn:active
+  background-color: #a643a1
+.profile-text-field
+  font-size: 14px
+  padding: 10px
+  border-radius: 3px
+  border: 1px solid #ccc
+  height: 28px
+  width: 150px
+.profile-form-edit
+  justify-content: space-between
+.profile-edit-block
+  justify-content: space-around
+  height: calc(100% - 150px)
+</style>

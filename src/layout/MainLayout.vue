@@ -1,9 +1,6 @@
 <template>
   <section>
     <MainHeader />
-    <div>
-      MainLayout
-    </div>
     <router-view />
     <MainLoginForm />
     <MainRegistrationForm />

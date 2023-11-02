@@ -2,6 +2,8 @@ export default {
   viewModalLogin: false,
   viewModalRegistration: false,
 
+  productIdToEdit: '',
+
   modalLogin: {
     login: '',
     password: '',

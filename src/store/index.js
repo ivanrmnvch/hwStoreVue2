@@ -7,6 +7,7 @@ import mutations from './mutations';
 import actions from './actions';
 
 import auth from './modules/auth';
+import products from './modules/products';
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
   actions,
   modules: {
     auth,
+    products,
   },
 });

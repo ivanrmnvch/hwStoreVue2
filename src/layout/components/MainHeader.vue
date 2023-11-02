@@ -3,17 +3,14 @@
     class="app-center header-wrapper"
   >
     <div class="content">
-      <form
-        class="content-item"
-        method="GET"
-        action="products"
-      >
+      <div class="content-item">
         <button
           class="content-item__title"
+          @click="$router.push({ name: 'Store' })"
         >
           {{ getLangText('header.title') }}
         </button>
-      </form>
+      </div>
       <div
         class="content-item"
         style="justify-content: end;"

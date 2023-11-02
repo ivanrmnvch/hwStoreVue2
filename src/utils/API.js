@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSessionToken } from '@/store/modules/auth/utils';
+import { getSessionToken } from '@/utils/common';
 
 const getToken = () => {
   const token = getSessionToken();
