@@ -1,6 +1,7 @@
 <template>
   <section>
     <div class="app-width row store-app">
+      <ProductFilter />
       <!--        <div class="store-filter">-->
       <!--          <jsp:include page="../../ui/filter.html.jsp">-->
       <!--            <jsp:param name="name" value="${data.getFilter().getName()}"></jsp:param>-->
@@ -58,11 +59,13 @@
 import { mapState, mapActions } from 'vuex';
 
 import ProductCard from '../components/ProductCard.vue';
+import ProductFilter from '../components/ProductFilter.vue';
 
 export default {
   name: 'StorePage',
   components: {
     ProductCard,
+    ProductFilter,
   },
   computed: {
     ...mapState('products', [
@@ -71,6 +74,7 @@ export default {
   },
   mounted() {
     this.init();
+    console.log('TEST', [] + null + 1);
   },
   methods: {
     ...mapActions('products', [
@@ -98,7 +102,7 @@ export default {
   box-shadow: 2px 2px 5px -1px gray
 .store-app
   justify-content: center
-  margin: 32px 230px 0 16px
+  margin: 426px 230px 0 16px
 .store-product
   margin-top: 40px
 .store-pagination

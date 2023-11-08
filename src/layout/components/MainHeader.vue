@@ -8,7 +8,7 @@
           class="content-item__title"
           @click="$router.push({ name: 'Store' })"
         >
-          {{ getLangText('header.title') }}
+          Store
         </button>
       </div>
       <div
@@ -79,8 +79,8 @@ export default {
     },
     getBtnText() {
       return this.user
-        ? this.getLangText('header.btnLogout')
-        : this.getLangText('header.btnLogin');
+        ? 'Logout'
+        : 'Login';
     },
   },
   methods: {

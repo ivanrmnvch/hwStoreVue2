@@ -66,6 +66,17 @@
             Редактировать
           </button>
         </div>
+        <div class="profile-form-edit row">
+          <div>
+            Создать / изменить каталог:
+          </div>
+          <button
+            class="profile-create-btn"
+            @click="$router.push({ name: 'CatalogEditPage' })"
+          >
+            Создать
+          </button>
+        </div>
       </div>
     </template>
   </section>
@@ -125,7 +136,7 @@ export default {
   background-color: white
   border-radius: 8px
   width: 330px
-  height: 300px
+  height: 310px
   box-shadow: 2px 2px 5px -1px gray
   padding: 10px
 .profile-page-user
@@ -163,7 +174,7 @@ export default {
   padding: 10px
   border-radius: 3px
   border: 1px solid #ccc
-  height: 28px
+  height: 7px
   width: 150px
 .profile-form-edit
   justify-content: space-between

@@ -45,14 +45,14 @@
           class="btn btn-green"
           @click="auth"
         >
-          {{ getLangText('loginForm.btnSing') }}
+          Sing up
         </button>
       </div>
       <button
         class="btn btn-purple"
         @click="openRegistrationForm"
       >
-        {{ getLangText('loginForm.btnReg') }}
+        Registration
       </button>
     </div>
   </section>
@@ -115,7 +115,7 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3)
   padding: 20px
   width: 300px
-  position: absolute
+  position: fixed
   left: calc(80% / 2)
   top: calc(70% /2)
 

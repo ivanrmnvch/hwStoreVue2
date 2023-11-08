@@ -1,16 +1,16 @@
 <template>
   <div class="edit-page">
     <div class="col">
-      <!--          <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
-      <!--            <jsp:param-->
-      <!--              name="action"-->
-      <!--              value="profile"-->
-      <!--            />-->
-      <!--          </jsp:include>-->
+      <!--      <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
+      <!--        <jsp:param-->
+      <!--          name="action"-->
+      <!--          value="profile"-->
+      <!--        />-->
+      <!--      </jsp:include>-->
 
       <div class="edit-page-form row">
         <div
-          v-for="element in editFormConfig()"
+          v-for="element in createFormConfig()"
           :key="element.value"
           class="edit-form row"
         >
@@ -18,34 +18,21 @@
             {{ element.name }}
           </p>
           <input
-            :readonly="element.readonly"
-            :value="editForm[element.value]"
-            :type="element.type"
             required
             class="edit-text-field ml-4"
-            @input="(value) => SET_EDIT_FORM_FIELD({
+            :type="element.type"
+            :value="createForm[element.value]"
+            @input="(value) => SET_CREATE_FORM_FIELD({
               field: element.value,
               value: value.target.value,
             })"
-          >
-        </div>
-        <div class="edit-form row">
-          <p class="col edit-form__name reset">
-            Active
-          </p>
-          <input
-            :checked="editForm.active"
-            type="checkbox"
-            required
-            class="edit-text-field ml-4"
-            @input="SET_EDIT_FORM_CHECKBOX"
           >
         </div>
       </div>
       <div class="btn-wrapper">
         <button
           class="btn-edit"
-          @click="update"
+          @click="create"
         >
           Редактировать
         </button>
@@ -54,34 +41,26 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
-
-import editFormConfig from '../config/editFormConfig';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import createFormConfig from '../config/createFormConfig';
 
 export default {
-  name: 'EditPage',
-  data: () => ({ editFormConfig }),
+  name: 'CreatePage',
+  data: () => ({ createFormConfig }),
   computed: {
-    ...mapState('edit', [
-      'editForm',
+    ...mapState('create', [
+      'createForm',
     ]),
-  },
-  async mounted() {
-    const { id } = this.$route.params;
-    await this.getProduct(id);
   },
   methods: {
-    ...mapActions('edit', [
-      'updateProduct',
-      'getProduct',
+    ...mapActions('create', [
+      'createProduct',
     ]),
-    ...mapMutations('edit', [
-      'SET_EDIT_FORM_CHECKBOX',
-      'SET_EDIT_FORM_FIELD',
+    ...mapMutations('create', [
+      'SET_CREATE_FORM_FIELD',
     ]),
-    async update() {
-      const { id } = this.$route.params;
-      await this.updateProduct(id);
+    async create() {
+      await this.createProduct();
     },
   },
 };
@@ -135,6 +114,4 @@ export default {
   display: flex
   flex-direction: row
   justify-content: start
-input[type=checkbox]
-  transform: scale(0.5)
 </style>

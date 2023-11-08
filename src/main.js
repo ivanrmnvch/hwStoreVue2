@@ -1,11 +1,14 @@
 import Vue from 'vue';
-import vuetify from './plugins/vuetify';
+// import vuetify from './plugins/vuetify';
 import App from './App.vue';
 import store from './store';
 import router from './router';
 
 import mixins from './utils/globalContext/mixins';
 import './assets/sass/index.sass';
+
+// todo сделал переключение режима.
+// todo пофиксить bool getters с учетом режима
 
 Vue.config.productionTip = false;
 const initApp = async () => {
@@ -28,7 +31,7 @@ const initApp = async () => {
   new Vue({
     store,
     router,
-    vuetify,
+    // vuetify,
     render: (h) => h(App),
   }).$mount('#app');
 };

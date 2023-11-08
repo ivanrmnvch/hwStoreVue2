@@ -1,0 +1,232 @@
+<template>
+  <div class="col edit-form">
+    <div class="catalog-page__title mb-4">
+      {{ getTitle }}
+    </div>
+    <div class="justify-space-between mb-3 row">
+      <div class="row">
+        <p class="reset">
+          Поиск:
+        </p>
+        <select
+          class="catalog-page__select ml-2"
+          :disabled="disabled"
+          @input="(value) => createEvent('search', JSON.parse(value.target.value))"
+        >
+          <option
+            v-for="item in sectionItems"
+            :key="item.id"
+            :value="JSON.stringify(item)"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <input
+          :disabled="disabled"
+          :checked="form.active"
+          type="checkbox"
+          @change="CHANGE_ACTIVE(type)"
+        >
+        <p class="reset">
+          Active
+        </p>
+      </div>
+    </div>
+    <div class="catalog-page__delimiter-line mb-3" />
+    <div class="mb-3">
+      <div class="mb-2">
+        Редактировать название раздела
+      </div>
+      <input
+        class="catalog-page__text-field"
+        :disabled="showUi"
+        :value="form.item.name"
+        type="text"
+        @input="(value) => SET_FORM_FIELD({
+          field: 'name',
+          type,
+          value: value.target.value,
+        })"
+      >
+    </div>
+    <div class="mb-3 row">
+      <div>
+        Показывать раздел в поиске:
+      </div>
+      <input
+        :disabled="showUi"
+        :checked="form.item.active"
+        class="ml-2"
+        type="checkbox"
+        @change="SET_FORM_FIELD({
+          field: 'active',
+          type,
+          value: !form.item.active,
+        })"
+      >
+    </div>
+    <div class="catalog-page__title col">
+      <button
+        class="catalog-page__create-btn mb-2"
+        :disabled="!showBtnSave || showUi"
+      >
+        <img
+          class="catalog-page__btn-icon"
+          :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+          src="../../../../public/icons/edit-svgrepo-com.svg"
+        >
+        <div class="ml-2">
+          Сохранить изменения
+        </div>
+      </button>
+      <button
+        :disabled="disabled"
+        @click="CHANGE_CREATION_MODE(type)"
+      >
+        <div
+          v-if="!creationMode"
+          class="catalog-page__create-btn"
+        >
+          <img
+            class="catalog-page__btn-icon"
+            :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+            src="../../../../public/icons/add-square-svgrepo-com.svg"
+          >
+          <div class="ml-2">
+            {{ getCreateBtnText }}
+          </div>
+        </div>
+        <div
+          v-else
+          class="catalog-page__create-btn"
+        >
+          <img
+            class="catalog-page__btn-icon"
+            :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+            src="../../../../public/icons/exit-svgrepo-com.svg"
+          >
+          <div class="ml-2">
+            {{ getCreateBtnText }}
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</template>
+<script>
+import { mapState, mapMutations, mapGetters } from 'vuex';
+
+// todo новый под раздел сделать второе имя кнопке
+// todo динамические заголовки
+
+export default {
+  name: 'CatalogEditPageForm',
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+    sectionItems: {
+      type: Array,
+      default: () => ([{
+        id: 0,
+        name: '--',
+        active: false,
+      }]),
+    },
+    form: {
+      type: Object,
+      default: () => ({}),
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    creationMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapState('catalogEdit', [
+      'mainForm',
+      'subForm',
+    ]),
+    ...mapGetters('catalogEdit', [
+      'formHasChanged',
+    ]),
+    showBtnSave() {
+      return this.formHasChanged(this.type);
+    },
+    getCreateBtnText() {
+      if (this.creationMode) {
+        return 'Выйти';
+      }
+      return this.type === 'main'
+        ? 'Создать новый раздел'
+        : 'Создать новый подраздел';
+    },
+    getTitle() {
+      if (this.creationMode) {
+        return this.type === 'main'
+          ? 'Создание раздела'
+          : 'Создание подраздела';
+      }
+      return this.type === 'main'
+        ? 'Редактирование раздела'
+        : 'Редактирование подраздела';
+    },
+    getForm() {
+      switch (this.type) {
+        case 'main':
+          return this.mainForm;
+        case 'sub':
+          return this.subForm;
+        default:
+          return null;
+      }
+    },
+    showUi() {
+      return Object.keys(this.getForm.item).length === 0
+        || this.getForm.item.id === 0
+        || this.disabled;
+    },
+  },
+  methods: {
+    ...mapMutations('catalogEdit', [
+      'CHANGE_CREATION_MODE',
+      'SET_FORM_FIELD',
+      'CHANGE_ACTIVE',
+    ]),
+    createEvent(event, value) {
+      // console.log('value', value);
+      this.$emit(event, value);
+    },
+  },
+};
+</script>
+<style lang="sass" scoped>
+.catalog-page
+  &__title
+    text-align: center
+  &__select
+    width: 150px
+    height: 19px
+  &__text-field
+    height: 13px
+    width: 277px
+  &__delimiter-line
+    border-bottom: 1px solid gray
+  &__btn-icon
+    object-fit: contain
+    width: 15px
+    height: 15px
+    &-disabled
+      opacity: 0.3
+  &__create-btn
+    display: flex
+    flex-direction: row
+    justify-content: center
+</style>
