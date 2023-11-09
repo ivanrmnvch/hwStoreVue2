@@ -18,6 +18,7 @@ export default {
       const data = JSON.parse(res.data);
       console.log('darta,', data);
       commit('SET_SECTIONS', data);
+      commit('SET_MAIN_SECTIONS');
     } catch (e) {
       console.error(e);
     }

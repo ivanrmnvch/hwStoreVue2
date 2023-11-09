@@ -10,13 +10,14 @@
         </p>
         <select
           class="catalog-page__select ml-2"
-          :disabled="disabled"
-          @input="(value) => createEvent('search', JSON.parse(value.target.value))"
+          :disabled="showSearchBlock"
+          @input="(value) => createEvent('click', JSON.parse(value.target.value))"
         >
           <option
-            v-for="item in sectionItems"
-            :key="item.id"
+            v-for="(item, index) in sectionItems"
+            :key="index"
             :value="JSON.stringify(item)"
+            :selected="item.selected"
           >
             {{ item.name }}
           </option>
@@ -24,7 +25,7 @@
       </div>
       <div class="row">
         <input
-          :disabled="disabled"
+          :disabled="showSearchBlock"
           :checked="form.active"
           type="checkbox"
           @change="CHANGE_ACTIVE(type)"
@@ -37,11 +38,11 @@
     <div class="catalog-page__delimiter-line mb-3" />
     <div class="mb-3">
       <div class="mb-2">
-        Редактировать название раздела
+        {{ getTextFieldTitle }}
       </div>
       <input
         class="catalog-page__text-field"
-        :disabled="showUi"
+        :disabled="unShowUi"
         :value="form.item.name"
         type="text"
         @input="(value) => SET_FORM_FIELD({
@@ -56,7 +57,7 @@
         Показывать раздел в поиске:
       </div>
       <input
-        :disabled="showUi"
+        :disabled="unShowUi"
         :checked="form.item.active"
         class="ml-2"
         type="checkbox"
@@ -70,11 +71,11 @@
     <div class="catalog-page__title col">
       <button
         class="catalog-page__create-btn mb-2"
-        :disabled="!showBtnSave || showUi"
+        :disabled="!showBtnSave || unShowUi"
       >
         <img
           class="catalog-page__btn-icon"
-          :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+          :class="{ 'catalog-page__btn-icon-disabled': shutdown }"
           src="../../../../public/icons/edit-svgrepo-com.svg"
         >
         <div class="ml-2">
@@ -82,7 +83,7 @@
         </div>
       </button>
       <button
-        :disabled="disabled"
+        :disabled="shutdown"
         @click="CHANGE_CREATION_MODE(type)"
       >
         <div
@@ -91,7 +92,7 @@
         >
           <img
             class="catalog-page__btn-icon"
-            :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+            :class="{ 'catalog-page__btn-icon-disabled': shutdown }"
             src="../../../../public/icons/add-square-svgrepo-com.svg"
           >
           <div class="ml-2">
@@ -104,7 +105,7 @@
         >
           <img
             class="catalog-page__btn-icon"
-            :class="{ 'catalog-page__btn-icon-disabled': disabled }"
+            :class="{ 'catalog-page__btn-icon-disabled': shutdown }"
             src="../../../../public/icons/exit-svgrepo-com.svg"
           >
           <div class="ml-2">
@@ -134,6 +135,7 @@ export default {
         id: 0,
         name: '--',
         active: false,
+        selected: false,
       }]),
     },
     form: {
@@ -148,6 +150,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    anotherMod: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapState('catalogEdit', [
@@ -157,6 +163,9 @@ export default {
     ...mapGetters('catalogEdit', [
       'formHasChanged',
     ]),
+    getSelectedId() {
+      return this.form.item.id;
+    },
     showBtnSave() {
       return this.formHasChanged(this.type);
     },
@@ -178,6 +187,16 @@ export default {
         ? 'Редактирование раздела'
         : 'Редактирование подраздела';
     },
+    getTextFieldTitle() {
+      if (this.creationMode) {
+        return this.type === 'main'
+          ? 'Введите название раздела'
+          : 'Введите название подраздела';
+      }
+      return this.type === 'main'
+        ? 'Редактировать название раздела'
+        : 'Редактировать название подраздела';
+    },
     getForm() {
       switch (this.type) {
         case 'main':
@@ -188,17 +207,59 @@ export default {
           return null;
       }
     },
-    showUi() {
-      return Object.keys(this.getForm.item).length === 0
+    unShowUi() {
+      return (Object.keys(this.getForm.item).length === 0
         || this.getForm.item.id === 0
-        || this.disabled;
+        || this.shutdown) && !this.creationMode;
+    },
+    shutdown() {
+      return this.disabled || this.globalShutdown;
+    },
+    globalShutdown() {
+      return this.creationMode === false && this.anotherMod === true;
+    },
+    showSearchBlock() {
+      return this.type === 'main'
+        ? (this.shutdown && !(this.type === 'main' && this.globalShutdown)) || this.creationMode
+        : this.shutdown || this.creationMode;
+    },
+  },
+  watch: {
+    creationMode(mode) {
+      console.log('mode', mode);
+      if (mode) {
+        if (this.type === 'main') {
+          console.log('main');
+          this.CLEAR_MAIN_SECTION();
+          this.CLEAR_SUB_SECTION();
+          this.SET_FORM_FIELD({ type: 'main', field: 'name', value: '' });
+          this.SET_FORM_FIELD({ type: 'sub', field: 'name', value: '' });
+        }
+        if (this.type === 'sub') {
+          // this.CLEAR_SUB_SECTION();
+          this.SET_FORM_FIELD({ type: 'main', field: 'name', value: '--' });
+          this.SET_FORM_FIELD({ type: 'sub', field: 'name', value: '' });
+        }
+      } else {
+        if (this.type === 'main') {
+          this.SET_MAIN_SECTIONS();
+          this.ROOT_SET_FORM({ type: 'main', id: 0, name: '--' });
+        }
+        if (this.type === 'sub') {
+          this.ROOT_SET_FORM({ type: 'main', id: 0, name: '--' });
+        }
+      }
     },
   },
   methods: {
     ...mapMutations('catalogEdit', [
       'CHANGE_CREATION_MODE',
+      'CLEAR_MAIN_SECTION',
+      'CLEAR_SUB_SECTION',
+      'SET_MAIN_SECTIONS',
       'SET_FORM_FIELD',
       'CHANGE_ACTIVE',
+      'ROOT_SET_FORM',
     ]),
     createEvent(event, value) {
       // console.log('value', value);

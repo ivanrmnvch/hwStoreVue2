@@ -2,13 +2,28 @@ export default {
   mainSections: [],
   subSections: [],
 
-  categories: [],
+  chapter: [{
+    id: 0,
+    name: '--',
+    active: false,
+    selected: false,
+  }],
+  categories: [{
+    id: 0,
+    name: '--',
+    active: false,
+    selected: false,
+    mainSection: {
+      id: 0,
+    },
+  }],
 
   mainForm: {
     item: {
       id: 0,
       name: '--',
       active: false,
+      selected: false,
     },
     active: true,
   },
@@ -18,6 +33,7 @@ export default {
       id: 0,
       name: '--',
       active: false,
+      selected: false,
       mainSection: {
         id: 0,
       },

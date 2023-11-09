@@ -11,18 +11,20 @@
       <div class="edit-page-form row">
         <CatalogEditPageForm
           :creation-mode="mainSectionCreationMode"
-          :section-items="mainSections"
+          :another-mod="subSectionCreationMode"
+          :section-items="chapter"
           :form="mainForm"
           type="main"
-          @search="(value) => setMainForm({ type: 'main', value })"
+          @click="(value) => setMainForm({ type: 'main', value })"
         />
         <CatalogEditPageForm
           :creation-mode="subSectionCreationMode"
+          :another-mod="mainSectionCreationMode"
           :section-items="categories"
           :disabled="showSubSections"
           :form="subForm"
           type="sub"
-          @search="(value) => setSubForm({ type: 'sub', value })"
+          @click="(value) => setSubForm({ type: 'sub', value })"
         />
       </div>
       <!--      <div class="btn-wrapper">-->
@@ -49,13 +51,13 @@ export default {
     ...mapState('catalogEdit', [
       'mainSectionCreationMode',
       'subSectionCreationMode',
-      'mainSections',
       'categories',
       'mainForm',
       'subForm',
+      'chapter',
     ]),
     showSubSections() {
-      return !this.categories.length;
+      return this.categories.length === 1;
     },
   },
   mounted() {
@@ -66,14 +68,17 @@ export default {
       'init',
     ]),
     ...mapMutations('catalogEdit', [
+      // 'DISABLED_SUB_FORM',
       'SET_SUB_SECTIONS',
       'CLEAR_SUB_FORM',
       'SET_FORM',
     ]),
     setMainForm({ type, value }) {
-      this.SET_SUB_SECTIONS(value);
+      this.SET_SUB_SECTIONS(value.id);
       this.SET_FORM({ type, value });
-      this.CLEAR_SUB_FORM();
+      if (value.id === 0) {
+        this.CLEAR_SUB_FORM();
+      }
     },
     setSubForm({ type, value }) {
       this.SET_FORM({ type, value });
