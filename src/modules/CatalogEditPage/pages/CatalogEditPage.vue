@@ -69,12 +69,14 @@ export default {
     ]),
     ...mapMutations('catalogEdit', [
       // 'DISABLED_SUB_FORM',
+      'SET_SELECTED_ITEM',
       'SET_SUB_SECTIONS',
       'CLEAR_SUB_FORM',
       'SET_FORM',
     ]),
     setMainForm({ type, value }) {
       this.SET_SUB_SECTIONS(value.id);
+      this.SET_SELECTED_ITEM({ type: 'sub', id: 0 });
       this.SET_FORM({ type, value });
       if (value.id === 0) {
         this.CLEAR_SUB_FORM();
@@ -82,6 +84,7 @@ export default {
     },
     setSubForm({ type, value }) {
       this.SET_FORM({ type, value });
+      this.SET_SELECTED_ITEM({ type: 'sub', id: value.id });
     },
   },
 };

@@ -163,9 +163,6 @@ export default {
     ...mapGetters('catalogEdit', [
       'formHasChanged',
     ]),
-    getSelectedId() {
-      return this.form.item.id;
-    },
     showBtnSave() {
       return this.formHasChanged(this.type);
     },
@@ -237,6 +234,7 @@ export default {
         }
         if (this.type === 'sub') {
           // this.CLEAR_SUB_SECTION();
+          this.SET_SELECTED_ITEM({ type: 'sub', id: 0 });
           this.SET_FORM_FIELD({ type: 'main', field: 'name', value: '--' });
           this.SET_FORM_FIELD({ type: 'sub', field: 'name', value: '' });
         }
@@ -257,6 +255,7 @@ export default {
       'CLEAR_MAIN_SECTION',
       'CLEAR_SUB_SECTION',
       'SET_MAIN_SECTIONS',
+      'SET_SELECTED_ITEM',
       'SET_FORM_FIELD',
       'CHANGE_ACTIVE',
       'ROOT_SET_FORM',

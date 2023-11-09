@@ -59,7 +59,7 @@ export default {
       id: 0,
       name: '--',
       active: false,
-      selected: false,
+      selected: true,
       mainSection: {
         id: 0,
       },
@@ -69,7 +69,7 @@ export default {
       item: {
         id: 0,
         name: '--',
-        active: false,
+        active: true,
         selected: false,
         mainSection: {
           id: 0,
@@ -115,7 +115,30 @@ export default {
       state[`${type}Form`].item.active = active;
     }
   },
-  SET_SELECTED_ITEM(state) {
+  SET_SELECTED_ITEM(state, { type, id }) {
+    const list = type === 'main'
+      ? state.chapter
+      : state.categories;
 
+    const newList = list.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          selected: true,
+        };
+      }
+      return {
+        ...item,
+        selected: false,
+      };
+    });
+
+    if (type === 'main') {
+      state.chapter = newList;
+    }
+
+    if (type === 'sub') {
+      state.categories = newList;
+    }
   },
 };
