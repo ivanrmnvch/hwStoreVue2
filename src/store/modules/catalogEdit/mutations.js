@@ -54,6 +54,23 @@ export default {
   SET_FORM_FIELD(state, { type, field, value }) {
     state[`${type}Form`].item[field] = value;
   },
+  CLEAR_MAIN_FORM(state) {
+    state.chapter = [{
+      id: 0,
+      name: '--',
+      active: false,
+      selected: false,
+    }];
+    state.mainForm = {
+      active: true,
+      item: {
+        id: 0,
+        name: '--',
+        active: true,
+        selected: false,
+      },
+    };
+  },
   CLEAR_SUB_FORM(state) {
     state.categories = [{
       id: 0,
@@ -102,7 +119,7 @@ export default {
   ROOT_SET_FORM(state, {
     type, id = null, name = null, active = null, selected = null,
   }) {
-    if (id.toString()) {
+    if (id && id.toString()) {
       state[`${type}Form`].item.id = id;
     }
     if (name !== null) {

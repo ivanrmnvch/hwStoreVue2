@@ -5,8 +5,17 @@ export default {
     description: '',
     price: '',
     imagePath: '',
-    brand: '',
-    category: '',
     active: '',
   },
+
+  mainSectionSelectedId: '',
+  subSectionSelectedId: '',
+  selectedBrandId: '',
+
+  mainSections: [],
+  subSections: [],
+
+  categories: [],
+
+  brands: [],
 };

@@ -1,11 +1,15 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import CatalogEditPage from '../modules/CatalogEditPage/pages/CatalogEditPage.vue';
 import StorePage from '../modules/store/pages/StorePage.vue';
 import EditPage from '../modules/editPage/pages/EditPage.vue';
+import BasketPage from '../modules/basket/pages/BasketPage.vue';
 import ProfilePage from '../modules/profile/pages/ProfilePage.vue';
+import OrdersPage from '../modules/ordersPage/pages/OrdersPage.vue';
 import CreatePage from '../modules/createPage/pages/CreatePage.vue';
+import MessagePage from '../modules/messagePage/pages/MessagePage.vue';
+import CheckoutPage from '../modules/checkoutPage/pages/CheckoutPage.vue';
+import CatalogEditPage from '../modules/catalogEditPage/pages/CatalogEditPage.vue';
 import ProductDetailPage from '../modules/productDetailsPage/pages/ProductDetailPage.vue';
 
 Vue.use(VueRouter);
@@ -24,6 +28,7 @@ const routes = [
   {
     path: '/basket',
     name: 'Basket',
+    component: BasketPage,
   },
   {
     path: '/product/new',
@@ -44,6 +49,21 @@ const routes = [
     path: '/product/edit/:id',
     name: 'EditPage',
     component: EditPage,
+  },
+  {
+    path: '/checkout',
+    name: 'CheckoutPage',
+    component: CheckoutPage,
+  },
+  {
+    path: '/message',
+    name: 'MessagePage',
+    component: MessagePage,
+  },
+  {
+    path: '/orders',
+    name: 'OrdersPage',
+    component: OrdersPage,
   },
 ];
 

@@ -36,12 +36,9 @@
                 src="../../../public/icons/cart-shopping-svgrepo-com.svg"
               >
             </div>
-            <div class="counter">
-              {{ '1' }}
-            </div>
           </button>
           <button
-            class="header-btn-wrapper ml-5"
+            class="header-btn-wrapper ml-2"
             @click="$router.push({ name: 'Profile' })"
           >
             <div class="img-box">

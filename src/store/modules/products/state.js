@@ -27,4 +27,6 @@ export default {
 
   products: [],
   product: {},
+
+  count: '1',
 };

@@ -6,11 +6,22 @@ export default {
     console.log('name === defaultName', name === defaultName);
     console.log("name === '--'", name === '--');
     console.log('name === \'', name === '');
-    console.log('(name === defaultName || name === \'--\' || name === \'\')', (name === defaultName || name === '--' || name === ''));
+    console.log('(name === defaultName || name === \'--\' || name === \'\')'
+      , (name === defaultName || name === '--' || name === ''));
     console.log('active === defaultActive', active === defaultActive);
 
-    console.log('!((name === defaultName || name === \'--\' || name === \'\') && active === defaultActive)', !((name === defaultName || name === '--' || name === '') && active === defaultActive));
+    console.log('!((name === defaultName || name === \'--\' || name === \'\') && active === defaultActive)', !((name === defaultName || name === '- -' || name === '') && active === defaultActive));
 
     return !((name === defaultName || name === '--' || name === '') && active === defaultActive);
+  },
+  getBody: (state) => (type) => {
+    const item = type === 'main'
+      ? state.mainForm.item
+      : state.subForm.item;
+    return {
+      id: item.id,
+      name: item.name,
+      active: item.active,
+    };
   },
 };

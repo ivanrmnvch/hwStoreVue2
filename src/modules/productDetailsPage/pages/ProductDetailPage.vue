@@ -22,10 +22,20 @@
             <button
               class="btn btn-green"
               :class="getBtnClass"
-            >
               @click="addToCart"
+            >
               Добавить в корзину
             </button>
+            <div class="product-detail-page__count-wrapper row">
+              <input
+                class="ml-4 product-detail-page__count"
+                :value="getCount"
+                min="1"
+                type="number"
+                oninput="validity.valid || (value='');"
+                @input="(value) => setCount(value.target.value)"
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -35,10 +45,16 @@
             Описание
           </h3>
           <button
-            class="btn-return"
+            class="btn-exit detail-page-return-btn"
             @click="$router.push({ name: 'Store' })"
           >
-            return
+            <div class="image-btn-exit-box">
+              <img
+                class="btn-exit-icon image-btn"
+                src="../../../../public/icons/cross-checkbox-svgrepo-com.svg"
+                alt="exit"
+              >
+            </div>
           </button>
           <!--            <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
           <!--              <jsp:param-->
@@ -65,7 +81,7 @@
   </section>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'ProductDetailPage',
@@ -75,26 +91,38 @@ export default {
   computed: {
     ...mapState('products', [
       'product',
+      'count',
     ]),
     getBtnClass() {
       return this.userIsAuth()
         ? ''
         : 'disabled';
     },
+    getCount() {
+      return this.count;
+    },
   },
   mounted() {
     const { id } = this.$route.params;
     this.id = id;
     this.getProduct(id);
+    this.SET_DATA({ type: 'count', value: '1' });
   },
   methods: {
+    ...mapMutations('products', [
+      'SET_DATA',
+    ]),
     ...mapActions('products', [
       'getProduct',
-      // 'addProductToCart',
+      'addProductToCart',
     ]),
-    // addToCart() {
-    //   this.addProductToCart(this.id);
-    // },
+    addToCart() {
+      this.addProductToCart(this.id);
+    },
+    setCount(value) {
+      console.log('value', value);
+      this.SET_DATA({ type: 'count', value: Number(value) <= 0 ? '1' : value });
+    },
   },
 };
 </script>
@@ -104,7 +132,13 @@ export default {
   display: flex
   justify-content: center
   align-items: center
+  &__count
+    height: 15px
+    width: 40px
+    &-wrapper
+      align-items: center
 .product-detail-page__content
+  margin-top: 250px
   height: 400px
   width: 700px
   background-color: white
@@ -137,4 +171,7 @@ export default {
 .img-box
   height: 240px
   width: 293px
+.detail-page-return-btn
+  display: flex
+  margin-top: 6px
 </style>

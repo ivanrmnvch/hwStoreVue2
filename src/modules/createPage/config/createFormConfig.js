@@ -19,14 +19,14 @@ export default () => [
     value: 'imagePath',
     type: 'url',
   },
-  {
-    name: 'Бренд:',
-    value: 'brand',
-    type: 'text',
-  },
-  {
-    name: 'Категория:',
-    value: 'category',
-    type: 'text',
-  },
+  // {
+  //   name: 'Бренд:',
+  //   value: 'brand',
+  //   type: 'text',
+  // },
+  // {
+  //   name: 'Категория:',
+  //   value: 'category',
+  //   type: 'text',
+  // },
 ];

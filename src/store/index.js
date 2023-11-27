@@ -8,9 +8,13 @@ import actions from './actions';
 
 import auth from './modules/auth';
 import edit from './modules/edit';
+import orders from './modules/orders';
 import create from './modules/create';
+import basket from './modules/basket';
 import products from './modules/products';
+import messagePage from './modules/messagePage';
 import catalogEdit from './modules/catalogEdit';
+import checkoutPage from './modules/checkoutPage';
 
 Vue.use(Vuex);
 
@@ -22,8 +26,12 @@ export default new Vuex.Store({
   modules: {
     auth,
     edit,
+    orders,
     create,
+    basket,
     products,
+    messagePage,
     catalogEdit,
+    checkoutPage,
   },
 });

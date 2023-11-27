@@ -29,16 +29,16 @@ export default () => [
     value: 'imagePath',
     type: 'url',
   },
-  {
-    name: 'Бренд:',
-    readonly: false,
-    value: 'brand',
-    type: 'text',
-  },
-  {
-    name: 'Категория:',
-    readonly: false,
-    value: 'category',
-    type: 'text',
-  },
+  // {
+  //   name: 'Бренд:',
+  //   readonly: false,
+  //   value: 'brand',
+  //   type: 'text',
+  // },
+  // {
+  //   name: 'Категория:',
+  //   readonly: false,
+  //   value: 'category',
+  //   type: 'text',
+  // },
 ];

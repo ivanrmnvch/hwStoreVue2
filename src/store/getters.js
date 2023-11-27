@@ -1,9 +1,7 @@
-// import {
-//   getTokenData,
-// } from '../utils/common';
-//
-// export default {
-//   getTokenData: (state) => (token) => {
-//     return getTokenData(token)
-//   },
-// };
+export default {
+  getBasketIds(state) {
+    return state.basket.basket
+      .filter((basket) => basket.selected)
+      .map(({ basketId }) => basketId);
+  },
+};

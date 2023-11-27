@@ -72,10 +72,11 @@
       <button
         class="catalog-page__create-btn mb-2"
         :disabled="!showBtnSave || unShowUi"
+        @click="save"
       >
         <img
           class="catalog-page__btn-icon"
-          :class="{ 'catalog-page__btn-icon-disabled': shutdown }"
+          :class="{ 'catalog-page__btn-icon-disabled': !showBtnSave || unShowUi }"
           src="../../../../public/icons/edit-svgrepo-com.svg"
         >
         <div class="ml-2">
@@ -117,11 +118,12 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex';
+import {
+  mapState, mapMutations, mapGetters, mapActions,
+} from 'vuex';
 
-// todo новый под раздел сделать второе имя кнопке
-// todo динамические заголовки
-
+// todo при входе к режим редактирования sub чистить text field в main
+// todo в режиме редактирования sub при выборе select "--" кнопка выхода дизейблится
 export default {
   name: 'CatalogEditPageForm',
   props: {
@@ -245,11 +247,16 @@ export default {
         }
         if (this.type === 'sub') {
           this.ROOT_SET_FORM({ type: 'main', id: 0, name: '--' });
+          this.ROOT_SET_FORM({ type: 'sub', id: 0, name: '--' });
         }
       }
     },
   },
   methods: {
+    ...mapActions('catalogEdit', [
+      'updateSection',
+      'createSection',
+    ]),
     ...mapMutations('catalogEdit', [
       'CHANGE_CREATION_MODE',
       'CLEAR_MAIN_SECTION',
@@ -263,6 +270,13 @@ export default {
     createEvent(event, value) {
       // console.log('value', value);
       this.$emit(event, value);
+    },
+    save() {
+      if (this.creationMode) {
+        this.createSection(this.type);
+      } else {
+        this.updateSection(this.type);
+      }
     },
   },
 };

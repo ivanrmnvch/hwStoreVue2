@@ -4,7 +4,16 @@ export default {
     description: '',
     price: '',
     imagePath: '',
-    brand: '',
-    category: '',
   },
+
+  mainSections: [],
+  subSections: [],
+
+  categories: [],
+
+  brands: [],
+
+  mainSectionSelectedId: 0,
+  subSectionSelectedId: 0,
+  selectedBrandId: 0,
 };

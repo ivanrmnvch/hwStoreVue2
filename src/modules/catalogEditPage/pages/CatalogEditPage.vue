@@ -1,5 +1,19 @@
 <template>
   <div class="edit-page">
+    <div style="position: absolute">
+      <button
+        class="btn-exit catalog-edit-page__btn-exit-wrapper"
+        @click="returnProfilePage"
+      >
+        <div class="image-btn-exit-box">
+          <img
+            class="btn-exit-icon image-btn"
+            src="../../../../public/icons/cross-checkbox-svgrepo-com.svg"
+            alt="exit"
+          >
+        </div>
+      </button>
+    </div>
     <div class="col">
       <!--      <jsp:include page="../../ui/buttons/return-btn.html.jsp">-->
       <!--        <jsp:param-->
@@ -65,6 +79,7 @@ export default {
   },
   methods: {
     ...mapActions('catalogEdit', [
+      'clearCatalogPage',
       'init',
     ]),
     ...mapMutations('catalogEdit', [
@@ -72,25 +87,39 @@ export default {
       'SET_SELECTED_ITEM',
       'SET_SUB_SECTIONS',
       'CLEAR_SUB_FORM',
+      'ROOT_SET_FORM',
       'SET_FORM',
     ]),
     setMainForm({ type, value }) {
       this.SET_SUB_SECTIONS(value.id);
+      this.SET_SELECTED_ITEM({ type: 'main', id: value.id });
       this.SET_SELECTED_ITEM({ type: 'sub', id: 0 });
-      this.SET_FORM({ type, value });
+      if (!this.subSectionCreationMode) {
+        this.SET_FORM({ type, value });
+      }
       if (value.id === 0) {
         this.CLEAR_SUB_FORM();
+      }
+      if (value.id === 0 && this.subSectionCreationMode) {
+        this.ROOT_SET_FORM({
+          type: 'sub', name: '',
+        });
       }
     },
     setSubForm({ type, value }) {
       this.SET_FORM({ type, value });
       this.SET_SELECTED_ITEM({ type: 'sub', id: value.id });
     },
+    returnProfilePage() {
+      this.$router.push({ name: 'Profile' });
+      this.clearCatalogPage();
+    },
   },
 };
 </script>
 <style lang="sass" scoped>
 .edit-page
+  margin-top: 250px
   background-color: white
   border-radius: 8px
   width: 625px
@@ -139,4 +168,8 @@ export default {
   display: flex
   flex-direction: row
   justify-content: start
+.catalog-edit-page
+  &__btn-exit-wrapper
+    position: absolute
+    left: 600px
 </style>

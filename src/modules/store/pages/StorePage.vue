@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="app-width row store-app">
+    <div class="row store-app">
       <ProductFilter />
       <!--        <div class="store-filter">-->
       <!--          <jsp:include page="../../ui/filter.html.jsp">-->
@@ -102,7 +102,6 @@ export default {
   box-shadow: 2px 2px 5px -1px gray
 .store-app
   justify-content: center
-  margin: 426px 230px 0 16px
 .store-product
   margin-top: 40px
 .store-pagination

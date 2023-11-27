@@ -11,7 +11,7 @@ export default {
   categories: [{
     id: 0,
     name: '--',
-    active: false,
+    active: true,
     selected: false,
     mainSection: {
       id: 0,

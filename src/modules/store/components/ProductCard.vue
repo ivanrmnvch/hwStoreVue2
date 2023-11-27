@@ -28,6 +28,8 @@
   </section>
 </template>
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'ProductCard',
   props: {
@@ -53,7 +55,11 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('products', [
+      'SET_DATA',
+    ]),
     openDetailsPage() {
+      this.SET_DATA({ type: '', value: this.id });
       this.$router.push({
         name: 'ProductDetailPage',
         params: {

@@ -34,6 +34,20 @@
           </p>
         </div>
       </div>
+      <div class="btn-exit-wrapper profile-btn-exit-wrapper row">
+        <button
+          class="btn-exit"
+          @click="$router.push({ name: 'Store' })"
+        >
+          <div class="image-btn-exit-box">
+            <img
+              class="btn-exit-icon image-btn"
+              src="../../../../public/icons/cross-checkbox-svgrepo-com.svg"
+              alt="exit"
+            >
+          </div>
+        </button>
+      </div>
     </div>
     <template v-if="userIsAdmin">
       <div class="col profile-edit-block">
@@ -133,6 +147,7 @@ export default {
 </script>
 <style lang="sass" scoped>
 .profile-page
+  margin-top: 250px
   background-color: white
   border-radius: 8px
   width: 330px
@@ -181,4 +196,8 @@ export default {
 .profile-edit-block
   justify-content: space-around
   height: calc(100% - 150px)
+.profile-btn-exit-wrapper
+  width: 136px
+  align-items: start
+  padding-top: 6px
 </style>

@@ -5,6 +5,39 @@ export default {
     await dispatch('getSectons');
   },
 
+  async updateSection({ getters }, type) {
+    const { id, name, active } = getters.getBody(type);
+    try {
+      const res = await API.put(`section/${id}`, {
+        name,
+        active,
+        type,
+      });
+      console.log('res', res);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  async createSection({ state, getters }, type) {
+    const { mainSectionsSelectedItemId: mainSectionId } = state;
+    const { name, active } = getters.getBody(type);
+
+    try {
+      const res = await API.post('section', {
+        name,
+        active,
+        type,
+        mainSectionId: type === 'sub'
+          ? mainSectionId
+          : undefined,
+      });
+      console.log('res', res);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   async getSectons({ state, commit }) {
     const { searchActive } = state;
 
@@ -16,11 +49,17 @@ export default {
       });
 
       const data = JSON.parse(res.data);
-      console.log('darta,', data);
       commit('SET_SECTIONS', data);
       commit('SET_MAIN_SECTIONS');
     } catch (e) {
       console.error(e);
     }
+  },
+
+  clearCatalogPage({ commit }) {
+    commit('CLEAR_MAIN_SECTION');
+    commit('CLEAR_SUB_SECTION');
+    commit('CLEAR_MAIN_FORM');
+    commit('CLEAR_SUB_FORM');
   },
 };

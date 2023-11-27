@@ -3,7 +3,7 @@ import API from '@/utils/API';
 export default {
   async init({ dispatch }) {
     await dispatch('getProductList');
-    await dispatch('getSectons');
+    await dispatch('getSections');
     await dispatch('getBrands');
   },
 
@@ -44,7 +44,7 @@ export default {
     }
   },
 
-  async getSectons({ commit }) {
+  async getSections({ commit }) {
     try {
       const res = await API.get('/sections');
       const data = JSON.parse(res.data);
@@ -65,7 +65,14 @@ export default {
     }
   },
 
-  // async addProductToCart(_) {
-  //   return '';
-  // },
+  async addProductToCart({ state }, id) {
+    const { count } = state;
+    try {
+      await API.post(`basket/${id}`, {
+        count,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  },
 };
