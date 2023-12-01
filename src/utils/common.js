@@ -22,7 +22,10 @@ export const checkExpiresSessionToken = () => {
   if (!data) {
     return false;
   }
-  if ((data || {}).expired && new Date() > new Date((data || {}).expired)) {
+
+  const now = Number(Date.now().toString().slice(0, 10));
+
+  if ((data || {}).exp && now > data.exp) {
     removeSessionToken();
     return false;
   }

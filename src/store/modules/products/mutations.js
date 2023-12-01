@@ -5,7 +5,6 @@ const defaultItem = {
 
 export default {
   SET_DATA(state, { type, value }) {
-    console.log('value set', value);
     state[type] = value;
   },
   SET_SECTIONS(state, payload) {

@@ -21,19 +21,17 @@
       <div class="checkout-page__header-product">
         Товар
       </div>
-      <div class="checkout-page__header-count">
-        Кол-во
-      </div>
       <div class="checkout-page__header-price">
-        Цена
+        Стоимость заказа
       </div>
     </div>
     <div class="col">
       <div
-        v-for="([orderId, value]) in orders"
+        v-for="({ orderId, items }) in getOrderObject"
         :key="orderId"
         class="checkout-page__container row"
       >
+        {{ orderId }}
         <div class="checkout-page__header-reqnum">
           <div class="mb-1 mt-1">
             {{ orderId }}
@@ -41,22 +39,27 @@
         </div>
         <div class="col">
           <div
-            v-for="(order, index) in value"
+            v-for="(item, index) in items"
             :key="index"
             class="row"
           >
             <div class="checkout-page__header-product">
               <div class="mb-1 mt-1">
-                {{ order.product.name }}
+                {{ item.product.name }}
               </div>
             </div>
-            <div class="checkout-page__header-count">
-              <div class="mb-1 mt-1">
-                {{ order.product.count }}
-              </div>
-            </div>
-            <div class="checkout-page__header-price">
-              <div class="mb-1 mt-1" />
+            <!--            v-if="index === 0"-->
+            <div
+
+              class="checkout-page__header-price"
+            >
+              <p
+                v-for="(text, row) in getPriceText({ orderId, item })"
+                :key="row"
+                class="mb-1 mt-1"
+              >
+                {{ text }}
+              </p>
             </div>
           </div>
         </div>
@@ -76,6 +79,9 @@ export default {
     ...mapState('orders', [
       'orders',
     ]),
+    getOrderObject() {
+      return Array.from(this.orders, ([orderId, items]) => ({ orderId, items }));
+    },
   },
   async mounted() {
     await this.getOrders();
@@ -84,6 +90,22 @@ export default {
     ...mapActions('orders', [
       'getOrders',
     ]),
+    getOrderById(id) {
+      return this.getOrderObject.find(({ orderId }) => orderId === id);
+    },
+    getSum(orderId) {
+      const order = this.getOrderById(orderId);
+      return order.items.reduce((acc, item) => item.product.price * item.count + acc, 0);
+    },
+    getPriceText({ orderId, item }) {
+      const sum = this.getSum(item.id);
+      // const test = [
+      //   `${order.product.price} x ${order.count} ед`,
+      //   `Итог: ${sum}`,
+      // ];
+      // console.log('test,', test);
+      // return test;
+    },
   },
 };
 </script>
@@ -113,6 +135,8 @@ export default {
       border-left: 1px solid gray
       flex: 0 0 50px
       padding-left: 5px
+      &-text
+        text-align: center
     &-price
       border-left: 1px solid gray
       padding-left: 5px

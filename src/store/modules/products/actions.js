@@ -23,8 +23,6 @@ export default {
       };
     }, {});
 
-    console.log('params', params);
-
     try {
       const res = await API.get('products', { params });
       const data = JSON.parse(res.data);
@@ -58,7 +56,6 @@ export default {
     try {
       const res = await API.get('/brands');
       const data = JSON.parse(res.data);
-      console.log('data', data);
       commit('SET_BRANDS', data);
     } catch (e) {
       console.error(e);

@@ -7,9 +7,6 @@ import router from './router';
 import mixins from './utils/globalContext/mixins';
 import './assets/sass/index.sass';
 
-// todo сделал переключение режима.
-// todo пофиксить bool getters с учетом режима
-
 Vue.config.productionTip = false;
 const initApp = async () => {
   Vue.config.productionTip = false;
@@ -20,13 +17,9 @@ const initApp = async () => {
     },
   });
 
-  // await store.dispatch('init');
-
-  // router.addRoutes(store.state.routes);
-
-  // await store.dispatch('auth/checkToken', { router });
-
-  store.dispatch('checkToken');
+  await store.dispatch('checkToken');
+  await store.dispatch('refresh');
+  store.dispatch('setTokenUpdate');
 
   new Vue({
     store,

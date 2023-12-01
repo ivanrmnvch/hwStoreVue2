@@ -74,7 +74,6 @@ export default {
   },
   mounted() {
     this.init();
-    console.log('TEST', [] + null + 1);
   },
   methods: {
     ...mapActions('products', [
