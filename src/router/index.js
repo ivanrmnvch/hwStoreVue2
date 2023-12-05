@@ -11,6 +11,23 @@ import MessagePage from '../modules/messagePage/pages/MessagePage.vue';
 import CheckoutPage from '../modules/checkoutPage/pages/CheckoutPage.vue';
 import CatalogEditPage from '../modules/catalogEditPage/pages/CatalogEditPage.vue';
 import ProductDetailPage from '../modules/productDetailsPage/pages/ProductDetailPage.vue';
+import ChangeOrderStatusPage from '../modules/changeOrderStatusPage/pages/ChangeOrderStatusPage.vue';
+
+import { getRole } from '../utils/common';
+
+const authorizedRoutes = [
+  'Profile',
+  'Basket',
+  'CheckoutPage',
+  'OrdersPage',
+];
+
+const adminRoutes = [
+  'ChangeOrderStatusPage',
+  'CatalogEditPage',
+  'CreatePage',
+  'EditPage',
+];
 
 Vue.use(VueRouter);
 
@@ -65,12 +82,41 @@ const routes = [
     name: 'OrdersPage',
     component: OrdersPage,
   },
+  {
+    path: '/orders/change-status',
+    name: 'ChangeOrderStatusPage',
+    component: ChangeOrderStatusPage,
+  },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const { name } = to;
+  const role = getRole();
+  switch (role) {
+    case 'ROLE_ADMIN':
+      next();
+      break;
+    case 'ROLE_USER': {
+      if (adminRoutes.includes(name)) {
+        next({ name: 'Store' });
+      } else {
+        next();
+      }
+      break;
+    }
+    default:
+      if (authorizedRoutes.includes(name) || adminRoutes.includes(name)) {
+        next({ name: 'Store' });
+      } else {
+        next();
+      }
+  }
 });
 
 export default router;

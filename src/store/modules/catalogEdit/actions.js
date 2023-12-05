@@ -8,12 +8,11 @@ export default {
   async updateSection({ getters }, type) {
     const { id, name, active } = getters.getBody(type);
     try {
-      const res = await API.put(`section/${id}`, {
+      await API.put(`section/${id}`, {
         name,
         active,
         type,
       });
-      console.log('res', res);
     } catch (e) {
       console.error(e);
     }
@@ -24,7 +23,7 @@ export default {
     const { name, active } = getters.getBody(type);
 
     try {
-      const res = await API.post('section', {
+      await API.post('section', {
         name,
         active,
         type,
@@ -32,7 +31,6 @@ export default {
           ? mainSectionId
           : undefined,
       });
-      console.log('res', res);
     } catch (e) {
       console.error(e);
     }

@@ -42,7 +42,7 @@ export default {
     }
 
     try {
-      await API.post('products/product', form);
+      await API.post('products/create-product', form);
     } catch (e) {
       console.error(e);
     }

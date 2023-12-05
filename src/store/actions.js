@@ -8,6 +8,17 @@ import {
 } from '@/utils/common';
 
 export default {
+  async registration({ state }) {
+    const { modalRegistration } = state;
+    try {
+      await API.post('registration', { ...modalRegistration });
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
+
   async authorization({ state, commit, dispatch }) {
     const { login, password } = state.modalLogin;
     try {

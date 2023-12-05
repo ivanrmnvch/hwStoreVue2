@@ -51,10 +51,15 @@ export const setSessionToken = (token = null) => {
   return true;
 };
 
-export default {
-  getSessionToken,
-  checkExpiresSessionToken,
-  getSessionData,
-  removeSessionToken,
-  getTokenData,
+export const getRole = () => {
+  const sessionData = getSessionData();
+  return sessionData && sessionData.roles[0];
 };
+
+// export default {
+//   getSessionToken,
+//   checkExpiresSessionToken,
+//   getSessionData,
+//   removeSessionToken,
+//   getTokenData,
+// };

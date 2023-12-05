@@ -19,70 +19,58 @@
         </div>
         <h2>Registration</h2>
       </div>
-      <form
-        action="registration"
-        method="post"
-      >
-        <div class="form-group">
-          <div class="group-item">
-            <div>
-              <label for="email">Email</label>
-            </div>
-            <div>
-              <input
-                :value="modalRegistration.email"
-                type="email"
-                required
-              >
-            </div>
+      <div class="form-group">
+        <div class="group-item">
+          <div>
+            <label for="email">Email</label>
           </div>
-          <div class="group-item">
-            <div>
-              <label for="username">Login</label>
-            </div>
-            <div>
-              <input
-                :value="modalRegistration.login"
-                type="text"
-                required
-              >
-            </div>
-          </div>
-          <div class="group-item">
-            <div>
-              <label for="password">Pass</label>
-            </div>
-            <div>
-              <input
-                :value="modalRegistration.password"
-                type="password"
-                required
-              >
-            </div>
+          <div>
+            <input
+              :value="modalRegistration.email"
+              type="email"
+              required
+              @input="SET_MODAL_REG({ field: 'email', value: $event.target.value })"
+            >
           </div>
         </div>
-        <button
-          class="btn btn-green"
-          @click="{}"
-        >
-          Create an account
-        </button>
-        <!--        <jsp:include page="../ui/buttons/btn.html.jsp">-->
-        <!--          <jsp:param-->
-        <!--            name="btnText"-->
-        <!--            value="Create an account"-->
-        <!--          />-->
-        <!--          <jsp:param-->
-        <!--            name="btnStyle"-->
-        <!--            value="green"-->
-        <!--          />-->
-        <!--        </jsp:include>-->
-      </form>
+        <div class="group-item">
+          <div>
+            <label for="username">Login</label>
+          </div>
+          <div>
+            <input
+              :value="modalRegistration.login"
+              type="text"
+              required
+              @input="SET_MODAL_REG({ field: 'login', value: $event.target.value })"
+            >
+          </div>
+        </div>
+        <div class="group-item">
+          <div>
+            <label for="password">Pass</label>
+          </div>
+          <div>
+            <input
+              :value="modalRegistration.password"
+              type="password"
+              required
+              @input="SET_MODAL_REG({ field: 'password', value: $event.target.value })"
+            >
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-green"
+        @click="createAccount"
+      >
+        Create an account
+      </button>
     </div>
   </section>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'MainRegistrationForm',
@@ -93,7 +81,13 @@ export default {
     ]),
   },
   methods: {
-    ...mapMutations(['SET_DATA']),
+    ...mapActions([
+      'registration',
+    ]),
+    ...mapMutations([
+      'SET_DATA',
+      'SET_MODAL_REG',
+    ]),
     returnLoginForm() {
       this.SET_DATA({ field: 'viewModalRegistration', value: false });
       this.SET_DATA({ field: 'viewModalLogin', value: true });
@@ -103,6 +97,12 @@ export default {
       const { name } = this.$route;
       if (name !== 'Store') {
         this.$router.push({ name: 'Store' });
+      }
+    },
+    async createAccount() {
+      const success = await this.registration();
+      if (success) {
+        this.SET_DATA({ field: 'viewModalRegistration', value: false });
       }
     },
   },

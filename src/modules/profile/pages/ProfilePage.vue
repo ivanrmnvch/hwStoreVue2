@@ -91,6 +91,14 @@
             Создать
           </button>
         </div>
+        <div class="profile-form-edit row">
+          <button
+            class="profile-edit-btn"
+            @click="openChangeStatusPage"
+          >
+            Редактировать статус заказа
+          </button>
+        </div>
       </div>
     </template>
   </section>
@@ -141,6 +149,11 @@ export default {
           params: { id },
         });
       }
+    },
+    openChangeStatusPage() {
+      this.$router.push({
+        name: 'ChangeOrderStatusPage',
+      });
     },
   },
 };

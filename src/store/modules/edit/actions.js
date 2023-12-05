@@ -54,7 +54,7 @@ export default {
     }
 
     try {
-      await API.put(`products/product/${id}`, body);
+      await API.put(`products/edit-product/${id}`, body);
     } catch (e) {
       console.error(e);
     }
